@@ -7,7 +7,7 @@ const addList = async (req, res) => {
 
     // Crear un nuevo objeto listSchema con el nombre proporcionado y una matriz vacía de paquetes
     const newList = {
-      packages: [],
+      parcels: [],
       name,
     };
 

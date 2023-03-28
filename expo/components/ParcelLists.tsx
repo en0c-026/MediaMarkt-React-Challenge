@@ -1,5 +1,7 @@
+// ParcelLists
 import React from 'react';
 import { FlatList, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   listItem: {
@@ -15,25 +17,31 @@ const styles = StyleSheet.create({
 
 const ParcelLists: React.FC<{
   lists: any;
-  handlePressList: any
-}> = ({ lists, handlePressList }) => {
+}> = ({ lists }) => {
+  const navigation = useNavigation();
+
+  const handlePressList = (listName: string) => {
+    navigation.navigate('ParcelList', { listName });
+  };
+
   return (
     <>
       <Text style={styles.title}>Parcel Lists</Text>
-      { lists && lists.length > 0 ? (
+      {lists && lists.length > 0 ? (
         <FlatList
           data={lists}
           keyExtractor={(list) => list._id}
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.listItem} onPress={() => handlePressList(item._id)}>
+            <TouchableOpacity style={styles.listItem} onPress={() => handlePressList(item.name)}>
               <Text style={styles.listName}>{item.name}</Text>
             </TouchableOpacity>
           )}
         />
       ) : (
-        <Text>No parcel lists found. Prease add a new list.</Text>
+        <Text>No parcel lists found. Please add a new list.</Text>
       )}
     </>
   );
 }
+
 export default ParcelLists;

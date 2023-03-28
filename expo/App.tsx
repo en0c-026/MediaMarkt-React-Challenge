@@ -2,19 +2,20 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DeliveryForm from './components/DeliveryForm';
-import Package from './components/Package';
 import HomePage from './pages/HomePage';
 import { StateProvider } from './state/context';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { enableScreens } from 'react-native-screens';
+import ParcelLists from './pages/ParcelListPage';
+import Parcel from './components/Parcel';
 
 enableScreens();
 
 export type RootStackParamList = {
   Home: undefined;
   DeliveryForm: undefined;
-  Package: {
-    packageId?: number;
+  Parcel: {
+    parcelId?: number;
   };
 };
 
@@ -34,8 +35,9 @@ const App = () => {
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen name="Home" component={HomePage} />
-            <Stack.Screen name="Package" component={Package} />
+            <Stack.Screen name="Parcel" component={Parcel} />
             <Stack.Screen name="DeliveryForm" component={DeliveryForm} />
+            <Stack.Screen name="ParcelList" component={ParcelLists} />
           </Stack.Navigator>
         </NavigationContainer>
       </StateProvider>

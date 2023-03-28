@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 
-const PackageList = () => {
+const ParcelList = () => {
   return (
     <View>
 
@@ -9,4 +9,4 @@ const PackageList = () => {
   )
 }
 
-export { PackageList }
+export { ParcelList }

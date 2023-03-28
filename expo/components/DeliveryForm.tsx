@@ -5,7 +5,7 @@ const DeliveryForm = () => {
 
   return (
     <>
-      <Text>Package Detail</Text>
+      <Text>Parcel Detail</Text>
     </>
   );
 };

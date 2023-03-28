@@ -26,7 +26,7 @@ const createEmployee = async (req, res) => {
 const getEmployeeByName = async (req, res) => {
   try {
     const { name } = req.params;
-    const employee = await Employee.findOne({ name }).populate('lists').populate('lists.packages');
+    const employee = await Employee.findOne({ name }).populate('lists.parcels');
     if (!employee) {
       return res.status(404).json({ message: 'Employeed not found or not exists' });
     }
@@ -36,7 +36,6 @@ const getEmployeeByName = async (req, res) => {
     res.status(500).json({ message: 'Error on get employee by name' });
   }
 };
-
 
 
 module.exports = {

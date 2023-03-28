@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const { updatePackage, addPackage, deletePackage } = require('./lib/package');
+const { updateParcel, addParcel, deleteParcel } = require('./lib/parcel');
 const { addList, getAllLists, deleteList } = require('./lib/list');
 const { createEmployee, getEmployeeByName } = require('./lib/employee');
 
@@ -39,9 +39,9 @@ app.get('/employees/:employeeId/lists', getAllLists); // Obtiene todas las lista
 app.delete('/employees/:employeeId/lists/:listId', deleteList); // Elimina la lista con ID listId del empleado con ID employeeId
 
 // Rutas para el controlador de paquetes
-app.post('/employees/:employeeId/lists/:listId/packages', addPackage); // Agrega un nuevo paquete a la lista con ID listId del empleado con ID employeeId
-app.patch('/employees/:employeeId/lists/:listId/packages/:packageId', updatePackage); // Actualiza el paquete con ID packageId en la lista con ID listId del empleado con ID employeeId
-app.delete('/employees/:employeeId/lists/:listId/packages/:packageId', deletePackage); // Elimina el paquete con ID packageId de la lista con ID listId del empleado con ID employeeId
+app.post('/employees/:employeeId/lists/:listId/parcels', addParcel); // Agrega un nuevo paquete a la lista con ID listId del empleado con ID employeeId
+app.patch('/employees/:employeeId/lists/:listId/parcels/:parcelId', updateParcel); // Actualiza el paquete con ID parcelId en la lista con ID listId del empleado con ID employeeId
+app.delete('/employees/:employeeId/lists/:listId/parcels/:parcelId', deleteParcel); // Elimina el paquete con ID parcelId de la lista con ID listId del empleado con ID employeeId
 
 
 // Puerto

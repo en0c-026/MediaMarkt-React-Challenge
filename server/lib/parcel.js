@@ -1,6 +1,6 @@
 const Employee = require("../models/Employee");
 
-const addPackage = async (req, res) => {
+const addParcel = async (req, res) => {
   try {
     const employee = await Employee.findOne({ name: req.params.employeeId });
     if (!employee) {
@@ -12,29 +12,29 @@ const addPackage = async (req, res) => {
       return res.status(404).send('List not found');
     }
 
-    const newPackage = {
-      packageId: req.body.packageId,
+    const newParcel = {
+      parcelId: req.body.parcelId,
       carrier: req.body.carrier,
       employeeId: employee._id,
       delivered: req.body.delivered || false,
       deliveryDriver: req.body.deliveryDriver,
     };
 
-    list.packages.push(newPackage);
+    list.parcels.push(newParcel);
 
     await employee.save();
 
-    return res.status(201).json(newPackage);
+    return res.status(201).json(newParcel);
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
   }
 };
 
-const updatePackage = async (req, res) => {
+const updateParcel = async (req, res) => {
   try {
-    const { employeeId, listId, packageId } = req.params;
-    const { packageData } = req.body;
+    const { employeeId, listId, parcelId } = req.params;
+    const { parcelData } = req.body;
 
     // Buscar el empleado por nombre
     const employee = await Employee.findOne({ name: employeeId });
@@ -51,14 +51,14 @@ const updatePackage = async (req, res) => {
     }
 
     // Buscar el paquete por id
-    const packageIndex = list.packages.findIndex(pkg => pkg.packageId === packageId);
+    const parcelIndex = list.parcels.findIndex(pkg => pkg.parcelId === parcelId);
 
-    if (packageIndex === -1) {
+    if (parcelIndex === -1) {
       return res.status(404).json({ error: 'Paquete no encontrado' });
     }
 
     // Actualizar el paquete con los nuevos datos
-    list.packages[packageIndex] = packageData;
+    list.parcels[parcelIndex] = parcelData;
 
     // Guardar los cambios en la base de datos
     await employee.save();
@@ -70,9 +70,9 @@ const updatePackage = async (req, res) => {
   }
 };
 
-const deletePackage = async (req, res) => {
+const deleteParcel = async (req, res) => {
   try {
-    const { employeeId, listId, packageId } = req.params;
+    const { employeeId, listId, parcelId } = req.params;
 
     // Buscar el empleado por nombre
     const employee = await Employee.findOne({ name: employeeId });
@@ -89,7 +89,7 @@ const deletePackage = async (req, res) => {
     }
 
     // Eliminar el paquete por id
-    list.packages = list.packages.filter(pkg => pkg.packageId !== packageId);
+    list.parcels = list.parcels.filter(pkg => pkg.parcelId !== parcelId);
 
     // Guardar los cambios en la base de datos
     await employee.save();
@@ -102,7 +102,7 @@ const deletePackage = async (req, res) => {
 };
 
 module.exports = {
-  addPackage,
-  updatePackage,
-  deletePackage
+  addParcel,
+  updateParcel,
+  deleteParcel
 };

@@ -1,8 +1,8 @@
 // List.js
 const mongoose = require('mongoose');
 
-const packageSchema = new mongoose.Schema({
-  packageId: {
+const parcelSchema = new mongoose.Schema({
+  parcelId: {
     type: String,
     required: true,
     unique: true,
@@ -30,7 +30,7 @@ const packageSchema = new mongoose.Schema({
 });
 
 const listSchema = new mongoose.Schema({
-  packages: [packageSchema],
+  parcels: [parcelSchema],
   name: {
     type: String,
     required: true,

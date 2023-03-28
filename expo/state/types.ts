@@ -13,8 +13,8 @@ export interface ResetUsernameAction {
 
 export type Action = SetUsernameAction | ResetUsernameAction;
 
-export type Package = {
-  packageId: string;
+export type Parcel = {
+  parcelId: string;
   carrier: string;
   employeeId: string;
   delivered?: boolean;
@@ -31,7 +31,7 @@ export type Package = {
 export type List = {
   _id: string;
   name: string;
-  packages: Package[];
+  parcels: Parcel[];
 };
 
 export interface Employee {

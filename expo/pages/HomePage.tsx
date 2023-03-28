@@ -7,7 +7,7 @@ import useCreateEmployee from '../hooks/useCreateEmployee';
 import { StateContext } from '../state/context';
 import RegisterModal from '../components/RegisterModal';
 import CreateListModal from '../components/CreateListModal';
-import { useAddParcelList } from '../hooks/useAddParcelList';
+
 const HomePage = () => {
   const [name, setName] = useState('');
   const { data: employee, refetch } = useEmployeeByName(name);
@@ -15,12 +15,6 @@ const HomePage = () => {
   const { state, dispatch } = useContext(StateContext);
   const [registerModalVisible, setRegisterModalVisible] = useState(false);
   const [createListModalVisible, setCreateListModalVisible] = useState(false);
-  const [addParcelList] = useAddParcelList(state.username);
-
-  const handlePressList = (listId: string) => {
-    console.log('Clicked on list:', listId);
-    // Navigate to the page of the list with the id of the list
-  };
 
   const handleCreateEmployee = async (name: string) => {
     createEmployee({ name });
@@ -50,7 +44,7 @@ const HomePage = () => {
           <TouchableOpacity style={styles.button} onPress={() => setCreateListModalVisible(true)}>
             <Text style={styles.buttonText}>Create Parcel List</Text>
           </TouchableOpacity>
-          <ParcelLists handlePressList={handlePressList} lists={employee?.lists} />
+          <ParcelLists lists={employee?.lists} />
         </View>
       )}
       <RegisterModal show={registerModalVisible} onClose={() => setRegisterModalVisible(false)} onCreateEmployee={handleCreateEmployee} />
