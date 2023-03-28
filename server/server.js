@@ -27,7 +27,7 @@ app.use(cors());
 
 // Rutas
 app.get('/', (req, res) => {
-  res.send('API funcionando');
+  res.send('API online');
 });
 
 // Rutas para el controlador de listas
@@ -47,6 +47,6 @@ app.delete('/employees/:employeeId/lists/:listId/parcels/:parcelId', deleteParce
 // Puerto
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`Servidor corriendo en el puerto ${port}`);
+  console.log(`Server run on ${port}`);
 });
 
