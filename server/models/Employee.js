@@ -5,27 +5,19 @@ const parcelSchema = new mongoose.Schema({
   parcelId: {
     type: String,
     required: true,
-    unique: true,
+  }, 
+  employeeName: {
+    type: String,
+    required: true,
   },
   carrier: {
     type: String,
-    required: true,
+    required: false,
   },
-  employeeId: {
-    type: String,
-    required: true,
-  },
+  
   delivered: {
     type: Boolean,
     default: false,
-  },
-  deliveryDriver: {
-    name: String,
-    licensePlate: String,
-    signature: {
-      data: Buffer,
-      contentType: String,
-    },
   },
 });
 

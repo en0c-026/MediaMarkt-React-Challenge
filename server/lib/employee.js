@@ -2,16 +2,17 @@ const Employee = require("../models/Employee");
 
 const createEmployee = async (req, res) => {
   try {
-    const { name } = req.body;
+    console.log(req.body)
+    const { employeeName } = req.body;
 
     // Comprobar si ya existe un empleado con el mismo nombre
-    const existingEmployee = await Employee.findOne({ name });
+    const existingEmployee = await Employee.findOne({ name: employeeName });
     if (existingEmployee) {
       return res.status(400).json({ message: 'Ya existe un empleado con este nombre' });
     }
 
     // Crear un nuevo empleado
-    const employee = new Employee({ name });
+    const employee = new Employee({ name: employeeName });
     employee.lists = [];
     await employee.save();
 
@@ -25,8 +26,8 @@ const createEmployee = async (req, res) => {
 
 const getEmployeeByName = async (req, res) => {
   try {
-    const { name } = req.params;
-    const employee = await Employee.findOne({ name }).populate('lists.parcels');
+    const { employeeName } = req.params;
+    const employee = await Employee.findOne({ name: employeeName }).populate('lists.parcels');
     if (!employee) {
       return res.status(404).json({ message: 'Employeed not found or not exists' });
     }

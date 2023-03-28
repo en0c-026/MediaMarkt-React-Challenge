@@ -1,24 +1,15 @@
 const Employee = require("../models/Employee");
 
 const addList = async (req, res) => {
+
   try {
-    const { employeeId } = req.params;
-    const { name } = req.body;
+    const { employeeName } = req.params;
 
-    // Crear un nuevo objeto listSchema con el nombre proporcionado y una matriz vacía de paquetes
-    const newList = {
-      parcels: [],
-      name,
-    };
+    const employee = await Employee.findOne({ name: employeeName });
+    employee.lists.push(req.body)
 
-    // Buscar al empleado por ID y agregar el nuevo objeto listSchema al array lists
-    const updatedEmployee = await Employee.findByIdAndUpdate(
-      employeeId,
-      { $push: { lists: newList } },
-      { new: true }
-    );
-
-    res.status(200).json(updatedEmployee);
+    await employee.save();
+    res.status(200).json(JSON.stringify(employee));
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error al crear un nuevo objeto listSchema y agregarlo al array lists del empleado' });

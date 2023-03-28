@@ -32,16 +32,16 @@ app.get('/', (req, res) => {
 
 // Rutas para el controlador de listas
 app.post('/employees', createEmployee); // Crea un nuevo empleado
-app.get('/employees/:name', getEmployeeByName); // Obtiene un empleado por el nombre
-app.post('/employees/:employeeId/lists', addList); // Crea una nueva lista para el empleado con ID employeeId
+app.get('/employees/:employeeName', getEmployeeByName); // Obtiene un empleado por el nombre
+app.post('/employees/:employeeName/lists', addList); // Crea una nueva lista para el empleado con ID employeeName
 
-app.get('/employees/:employeeId/lists', getAllLists); // Obtiene todas las listas para el empleado con ID employeeId
-app.delete('/employees/:employeeId/lists/:listId', deleteList); // Elimina la lista con ID listId del empleado con ID employeeId
+app.get('/employees/:employeeName/lists', getAllLists); // Obtiene todas las listas para el empleado con ID employeeName
+app.delete('/employees/:employeeName/lists/:listId', deleteList); // Elimina la lista con ID listId del empleado con ID employeeName
 
 // Rutas para el controlador de paquetes
-app.post('/employees/:employeeId/lists/:listId/parcels', addParcel); // Agrega un nuevo paquete a la lista con ID listId del empleado con ID employeeId
-app.patch('/employees/:employeeId/lists/:listId/parcels/:parcelId', updateParcel); // Actualiza el paquete con ID parcelId en la lista con ID listId del empleado con ID employeeId
-app.delete('/employees/:employeeId/lists/:listId/parcels/:parcelId', deleteParcel); // Elimina el paquete con ID parcelId de la lista con ID listId del empleado con ID employeeId
+app.post('/employees/:employeeName/lists/:listId/parcels', addParcel); // Agrega un nuevo paquete a la lista con ID listId del empleado con ID employeeName
+app.patch('/employees/:employeeName/lists/:listId/parcels/:parcelId', updateParcel); // Actualiza el paquete con ID parcelId en la lista con ID listId del empleado con ID employeeName
+app.delete('/employees/:employeeName/lists/:listId/parcels/:parcelId', deleteParcel); // Elimina el paquete con ID parcelId de la lista con ID listId del empleado con ID employeeName
 
 
 // Puerto

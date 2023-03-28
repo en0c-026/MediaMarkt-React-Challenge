@@ -6,7 +6,7 @@ export const API_URL = "http://192.168.43.191:3000"
 
 
 interface CreateEmployeeParams {
-  name: string;
+  employeeName: string;
 }
 
 const useCreateEmployee = () => {

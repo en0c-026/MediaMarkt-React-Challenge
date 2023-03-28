@@ -1,8 +1,10 @@
 const Employee = require("../models/Employee");
 
 const addParcel = async (req, res) => {
+  console.log(req.params)
+  console.log(req.body)
   try {
-    const employee = await Employee.findOne({ name: req.params.employeeId });
+    const employee = await Employee.findOne({ name: req.body.employeeName });
     if (!employee) {
       return res.status(404).send('Employee not found');
     }
@@ -12,19 +14,11 @@ const addParcel = async (req, res) => {
       return res.status(404).send('List not found');
     }
 
-    const newParcel = {
-      parcelId: req.body.parcelId,
-      carrier: req.body.carrier,
-      employeeId: employee._id,
-      delivered: req.body.delivered || false,
-      deliveryDriver: req.body.deliveryDriver,
-    };
-
-    list.parcels.push(newParcel);
+    list.parcels.push(req.body);
 
     await employee.save();
 
-    return res.status(201).json(newParcel);
+    return res.status(201).json(req.body);
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
@@ -33,11 +27,11 @@ const addParcel = async (req, res) => {
 
 const updateParcel = async (req, res) => {
   try {
-    const { employeeId, listId, parcelId } = req.params;
+    const { employeeName, listId, parcelId } = req.params;
     const { parcelData } = req.body;
 
     // Buscar el empleado por nombre
-    const employee = await Employee.findOne({ name: employeeId });
+    const employee = await Employee.findOne({ name: employeeName });
 
     if (!employee) {
       return res.status(404).json({ error: 'Empleado no encontrado' });
@@ -72,10 +66,10 @@ const updateParcel = async (req, res) => {
 
 const deleteParcel = async (req, res) => {
   try {
-    const { employeeId, listId, parcelId } = req.params;
+    const { employeeName, listId, parcelId } = req.params;
 
     // Buscar el empleado por nombre
-    const employee = await Employee.findOne({ name: employeeId });
+    const employee = await Employee.findOne({ name: employeeName });
 
     if (!employee) {
       return res.status(404).json({ error: 'Empleado no encontrado' });

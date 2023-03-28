@@ -2,6 +2,7 @@
 import React from 'react';
 import { FlatList, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Employee } from '../state/types';
 
 const styles = StyleSheet.create({
   listItem: {
@@ -16,23 +17,23 @@ const styles = StyleSheet.create({
 });
 
 const ParcelLists: React.FC<{
-  lists: any;
-}> = ({ lists }) => {
+  employee: Employee | undefined;
+}> = ({ employee }) => {
   const navigation = useNavigation();
 
-  const handlePressList = (listName: string) => {
-    navigation.navigate('ParcelList', { listName });
+  const handlePressList = (username: string, listId?: string) => {
+    navigation.navigate('ParcelList', { listId, username });
   };
 
   return (
     <>
       <Text style={styles.title}>Parcel Lists</Text>
-      {lists && lists.length > 0 ? (
+      {employee && employee.lists && employee.lists.length > 0 ? (
         <FlatList
-          data={lists}
-          keyExtractor={(list) => list._id}
+          data={employee.lists}
+          keyExtractor={(list) => list.name}
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.listItem} onPress={() => handlePressList(item.name)}>
+            <TouchableOpacity style={styles.listItem} onPress={() => handlePressList(employee.name, item._id)}>
               <Text style={styles.listName}>{item.name}</Text>
             </TouchableOpacity>
           )}

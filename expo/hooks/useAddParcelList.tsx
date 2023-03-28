@@ -13,16 +13,13 @@ interface AddParcelListResponse {
 }
 
 async function addParcelList({ employeeName, listName }: AddParcelListParams): Promise<AddParcelListResponse> {
-  const employeeQuery = await fetch(`${API_URL}/employees/${employeeName}`);
-  const employee = await employeeQuery.json();
-  const employeeId = employee._id;
 
   const newList = {
     packages: [],
     name: listName,
   };
 
-  const updatedEmployeeQuery = await fetch(`${API_URL}/employees/${employeeId}/lists`, {
+  const updatedEmployeeQuery = await fetch(`${API_URL}/employees/${employeeName}/lists`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

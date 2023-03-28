@@ -7,6 +7,7 @@ import useCreateEmployee from '../hooks/useCreateEmployee';
 import { StateContext } from '../state/context';
 import RegisterModal from '../components/RegisterModal';
 import CreateListModal from '../components/CreateListModal';
+import { useQueryClient } from 'react-query';
 
 const HomePage = () => {
   const [name, setName] = useState('');
@@ -16,8 +17,8 @@ const HomePage = () => {
   const [registerModalVisible, setRegisterModalVisible] = useState(false);
   const [createListModalVisible, setCreateListModalVisible] = useState(false);
 
-  const handleCreateEmployee = async (name: string) => {
-    createEmployee({ name });
+  const handleCreateEmployee = async (employeeName: string) => {
+    createEmployee({ employeeName });
     refetch();
     setRegisterModalVisible(false);
   };
@@ -44,7 +45,7 @@ const HomePage = () => {
           <TouchableOpacity style={styles.button} onPress={() => setCreateListModalVisible(true)}>
             <Text style={styles.buttonText}>Create Parcel List</Text>
           </TouchableOpacity>
-          <ParcelLists lists={employee?.lists} />
+          <ParcelLists employee={employee} />
         </View>
       )}
       <RegisterModal show={registerModalVisible} onClose={() => setRegisterModalVisible(false)} onCreateEmployee={handleCreateEmployee} />

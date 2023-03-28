@@ -13,23 +13,22 @@ export interface ResetUsernameAction {
 
 export type Action = SetUsernameAction | ResetUsernameAction;
 
+interface Carrier {
+  companyName: string;
+  driver: string;
+  licensePlate: string;
+  centerAddress: string;
+}
+
 export type Parcel = {
   parcelId: string;
-  carrier: string;
-  employeeId: string;
-  delivered?: boolean;
-  deliveryDriver?: {
-    name: string;
-    licensePlate: string;
-    signature?: {
-      data: string;
-      contentType: string;
-    };
-  };
+  employeeName: string;
+  delivered: boolean;
+  carrier?: Carrier;
 };
 
 export type List = {
-  _id: string;
+  _id?: string
   name: string;
   parcels: Parcel[];
 };
