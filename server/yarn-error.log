@@ -1,0 +1,32 @@
+Arguments: 
+  /usr/local/bin/node /home/en0c/.yarn/bin/yarn.js add express mongoose body-parser cors dotenv
+
+PATH: 
+  /home/en0c/.local/bin:/home/en0c/.yarn/bin:/home/en0c/.config/yarn/global/node_modules/.bin:/home/en0c/.sdkman/candidates/gradle/current/bin:/home/en0c/.cargo/bin:/home/en0c/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/en0c/.local/share/JetBrains/Toolbox/scripts:/usr/local/go/bin
+
+Yarn version: 
+  1.22.17
+
+Node version: 
+  16.15.1
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: getaddrinfo EAI_AGAIN registry.yarnpkg.com
+      at GetAddrInfoReqWrap.onlookup [as oncomplete] (node:dns:71:26)
+
+npm manifest: 
+  {
+    "name": "server",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
