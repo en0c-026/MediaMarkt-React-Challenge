@@ -10,10 +10,11 @@ The project is a mobile application that allows users of an electronics store to
   - [Table of Contents](#table-of-contents)
   - [Install](#install)
   - [Usage](#usage)
+  - [Front End React Native](#front-end-react-native)
+    - [Demo Video](#demo-video)
   - [API MongoDB](#api-mongodb)
     - [Connection to MongoDB](#connection-to-mongodb)
     - [Environment Variables](#environment-variables)
-  - [Front End React Native](#front-end-react-native)
 
 
 ## Install
@@ -33,6 +34,13 @@ Note: Make sure that you have MongoDB installed and running on your system befor
 
 ## Usage 
 
+## Front End React Native
+
+### Demo Video
+https://user-images.githubusercontent.com/28759552/228567099-5bc2d95d-cca9-4d29-b381-5e9598325fdd.mp4
+
+Working...
+
 ## API MongoDB
 
 This server is built using Express.js and MongoDB as the database. The main processes in the database are creating, reading, updating, and deleting data from different collections.
@@ -49,10 +57,3 @@ Replace `<YOUR_MONGO_API_URI>` with your own MongoDB Atlas API URI.
 
 Learn more about API here. [API.md](/server/API.md)
 
-## Front End React Native
-
-### Video Demo
-https://user-images.githubusercontent.com/28759552/228567099-5bc2d95d-cca9-4d29-b381-5e9598325fdd.mp4
-
-###
-Working...
