@@ -30,6 +30,7 @@ const AddParcelListModal: React.FC<AddParcelListModalProps> = ({ show, onClose, 
       <View style={styles.modalBackground}>
         <View style={styles.modalContainer}>
           <TouchableOpacity style={styles.cancelButton} onPress={() => {
+            setListName('');
             onClose();
           }}>
             <Icon name='close' color='#FFFFF' size={24} />
