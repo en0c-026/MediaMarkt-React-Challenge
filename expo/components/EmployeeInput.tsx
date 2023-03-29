@@ -4,13 +4,9 @@ import { useEmployeeByName } from '../hooks/useGetEmployeeByName';
 import { StateContext } from '../state/context';
 import RegisterEmployeeModal from './RegisterEmployeeModal';
 
-interface EmployeeInputProps {
-  name: string;
-  setName: (v: string) => void;
-}
-
-const EmployeeInput = ({ name, setName }: EmployeeInputProps) => {
-  const { isLoading, isError, refetch } = useEmployeeByName(name);
+const EmployeeInput = () => {
+  const [name, setName] = useState('');
+  const { isLoading, isError, refetch } = useEmployeeByName(name, false);
   const [registerModalVisible, setRegisterModalVisible] = useState(false);
 
   const { dispatch } = useContext(StateContext);

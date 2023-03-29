@@ -37,7 +37,7 @@ async function addParcelList({ employeeName, listName }: AddParcelListParams): P
 }
 
 export function useAddParcelList(name: string): [MutationFunction<AddParcelListResponse, AddParcelListParams>, UseMutationResult<AddParcelListResponse, Error, AddParcelListParams>] {
-  const employeeQuery = useEmployeeByName(name);
+  const employeeQuery = useEmployeeByName(name, false);
   const mutationResult = useMutation<AddParcelListResponse, Error, AddParcelListParams>(addParcelList, {
     onSuccess: () => {
       employeeQuery.refetch();

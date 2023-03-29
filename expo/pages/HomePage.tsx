@@ -1,48 +1,25 @@
-import React, { useContext, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { useEmployeeByName } from '../hooks/useGetEmployeeByName';
+import React, { useContext } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
 import ParcelLists from '../components/ParcelLists';
 import EmployeeInput from '../components/EmployeeInput';
 import { StateContext } from '../state/context';
-import RegisterEmployeeModal from '../components/RegisterEmployeeModal';
-import AddParcelListModal from '../components/AddParcelListModal';
-import Icon from 'react-native-vector-icons/AntDesign';
+import WelcomeHeader from '../components/WelcomeHeader';
 
 const HomePage = () => {
-  const [name, setName] = useState('');
-  const { data: employee, refetch } = useEmployeeByName(name);
-  const { state, dispatch } = useContext(StateContext);
-  const [createListModalVisible, setAddParcelListModalVisible] = useState(false);
-  const handleResetUsername = () => dispatch({ type: 'RESET_USERNAME' });
+  const { state } = useContext(StateContext);
 
   return (
     <View style={styles.container}>
       {!state.username ?
         <>
           <Text style={styles.title}>CarrieX App</Text>
-          <EmployeeInput name={name} setName={setName} />
+          <EmployeeInput />
         </> :
         <>
-          <View style={styles.welcomeHeader}>
-            <Text style={styles.subtitle}>Welcome {state.username ? state.username : 'to CarrieX App!'}</Text>
-            <TouchableOpacity style={styles.button} onPress={handleResetUsername}>
-              <Text style={styles.buttonText}>Logout</Text>
-            </TouchableOpacity>
-          </View>
-          <ParcelLists employee={employee} onDeleteList={() => refetch()} />
-          <TouchableOpacity style={styles.addButtonContainer} onPress={() => setAddParcelListModalVisible(true)}>
-            <Icon name='pluscircle' color='#DF0000' size={48} />
-          </TouchableOpacity>
+          <WelcomeHeader username={state.username} />
+          <ParcelLists />
         </>
       }
-      <AddParcelListModal
-        show={createListModalVisible}
-        onClose={() => {
-          setAddParcelListModalVisible(false)
-          refetch()
-        }}
-        employeeName={state.username}
-      />
     </View>
   );
 };
@@ -67,10 +44,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 5,
-  },
-  addButtonContainer: {
-    display: 'flex',
-    alignItems: 'center'
   },
   buttonText: {
     color: '#fff',

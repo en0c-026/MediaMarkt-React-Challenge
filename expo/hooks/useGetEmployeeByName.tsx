@@ -13,9 +13,7 @@ async function fetchEmployeeByName(name: string): Promise<Employee> {
   return employee;
 }
 
-export function useEmployeeByName(name: string) {
+export function useEmployeeByName(name: string, enabled: boolean) {
   const queryKey: QueryKey = ['employeeByName', name];
-  return useQuery<Employee, Error>(queryKey, () => fetchEmployeeByName(name), {
-    enabled: false
-  });
+  return useQuery<Employee, Error>(queryKey, () => fetchEmployeeByName(name), { enabled });
 }

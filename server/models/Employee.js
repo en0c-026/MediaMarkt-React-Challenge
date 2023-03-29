@@ -10,15 +10,14 @@ const parcelSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  carrier: {
-    type: String,
-    required: false,
-  },
-  
   delivered: {
     type: Boolean,
     default: false,
   },
+  carrierId: {
+    type: String,
+    required: false,
+  }
 });
 
 const listSchema = new mongoose.Schema({

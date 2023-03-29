@@ -2,7 +2,6 @@ const Employee = require("../models/Employee");
 
 const createEmployee = async (req, res) => {
   try {
-    console.log(req.body)
     const { employeeName } = req.body;
 
     // Comprobar si ya existe un empleado con el mismo nombre

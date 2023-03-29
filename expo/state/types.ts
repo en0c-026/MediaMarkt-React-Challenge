@@ -14,6 +14,7 @@ export interface ResetUsernameAction {
 export type Action = SetUsernameAction | ResetUsernameAction;
 
 interface Carrier {
+  carrierId: string;
   companyName: string;
   driver: string;
   licensePlate: string;
@@ -24,7 +25,7 @@ export type Parcel = {
   parcelId: string;
   employeeName: string;
   delivered: boolean;
-  carrier?: Carrier;
+  carrierId?: string;
 };
 
 export type List = {

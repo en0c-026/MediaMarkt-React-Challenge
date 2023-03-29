@@ -6,60 +6,63 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import { useDeleteParcel } from '../hooks/useDeleteParcel';
+import DeliveryModal from './DeliveryModal';
+import { useEmployeeByName } from '../hooks/useGetEmployeeByName';
 
 interface Props {
   parcel: Parcel;
   listId: string;
-  showModal: (parcel: Parcel) => void;
-  onDelete: (params?: any) => any;
 }
 
-const ParcelItem: React.FC<Props> = ({ listId, parcel, showModal, onDelete }) => {
+const ParcelItem: React.FC<Props> = ({ listId, parcel }) => {
+  const { refetch } = useEmployeeByName(parcel.employeeName, false)
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [delivered, setDelivered] = useState(parcel.delivered);
-  const [carrier, setCarrier] = useState(parcel.carrier);
   const [deleteParcel, { isLoading: isDeletingParcel }] = useDeleteParcel();
 
   async function handleDeleteParcel(parcelId: string, employeeName: string) {
     await deleteParcel({ employeeName, listId, parcelId });
-    onDelete()
+    refetch()
   }
-
-  const [updateParcel, { isLoading: isUpdatingParcel }] = useUpdateParcel();
-
-  const handleUpdateParcel = async () => {
-    await updateParcel({
-      employeeName: parcel.employeeName,
-      listId, parcelId: parcel.parcelId,
-      parcel: {
-        parcelId: parcel.parcelId,
-        delivered,
-        carrier,
-        employeeName: parcel.employeeName
-      }
-    });
-    setIsModalVisible(false);
-  };
 
   return (
     <View style={styles.container}>
       <View style={styles.parcel} >
         <Text style={styles.parcelRowId}>{parcel.parcelId}</Text>
         <Text style={styles.parcelRow}>{parcel.delivered ? 'Yes' : 'No'}</Text>
-        <TouchableOpacity style={styles.parcelRow} onPress={() => showModal(parcel)}>
-          <MaterialCommunityIcon name="truck-delivery" size={24} style={{ marginLeft: 8}} color="#006dd6" />
+        <TouchableOpacity
+          style={styles.parcelRow}
+          onPress={() => setIsModalVisible(true)}
+          disabled={parcel.delivered}
+        >
+          <MaterialCommunityIcon 
+          name="truck-delivery" 
+          size={24} 
+          style={{ marginLeft: 8 }} 
+            color={parcel.delivered ? '#BFBFBF' : '#006dd6'} 
+          />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.parcelRow} onPress={() => handleDeleteParcel(parcel.parcelId, parcel.employeeName)} disabled={isDeletingParcel}>
-          <FontAwesome name="trash-o" size={24} color="#DF0000" style={{ marginLeft: 8}} />
+        <TouchableOpacity
+          style={styles.parcelRow}
+          onPress={() => handleDeleteParcel(parcel.parcelId, parcel.employeeName)} 
+          disabled={isDeletingParcel || parcel.delivered}
+        >
+          <FontAwesome 
+          name="trash-o" size={24} 
+            color={parcel.delivered ? '#BFBFBF' : '#DF0000'} 
+          style={{ marginLeft: 8 }} 
+          />
         </TouchableOpacity>
       </View>
-      <Modal visible={isModalVisible}>
-        <Text>Parcel ID: {parcel.parcelId}</Text>
-        <Text>Delivered:</Text>
-        <TextInput value={delivered.toString()} onChangeText={(val) => setDelivered(val === 'true')} />
-        <Button title="Update" onPress={handleUpdateParcel} disabled={isUpdatingParcel} />
-        <Button title="Cancel" onPress={() => setIsModalVisible(false)} />
-      </Modal>
+      <DeliveryModal
+        show={isModalVisible}
+        parcelId={parcel.parcelId}
+        listId={listId}
+        employeeName={parcel.employeeName}
+        onClose={() => {
+          setIsModalVisible(false)
+          refetch()
+        }}
+      />
     </View>
   );
 };

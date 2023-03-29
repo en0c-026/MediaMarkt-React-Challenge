@@ -1,72 +1,19 @@
-import React, { useState } from 'react';
-import { Text, Button, Modal, TextInput, StyleSheet, TouchableOpacity, View, FlatList } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { Text, StyleSheet, TouchableOpacity, View, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { useQuery } from 'react-query';
 import AddParcelModal from '../components/AddParcelModal';
 import ParcelItem from '../components/ParcelItem';
-import { useAddParcel } from '../hooks/useAddParcel';
-import { useUpdateParcel } from '../hooks/useUpdateParcel';
-import { Employee, Parcel } from '../state/types';
+import { useEmployeeByName } from '../hooks/useGetEmployeeByName';
+import { StateContext } from '../state/context';
 
 const ParcelListPage: React.FC<{
   route: any;
 }> = ({ route }) => {
-  const { listId, username } = route.params;
-
-  const { data: employee, isLoading, refetch } = useQuery<Employee>(['employeeByName', username]);
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const { listId } = route.params;
+  const { state } = useContext(StateContext)
+  const { data: employee, isLoading, refetch } = useEmployeeByName(state.username, true)
+  const [isAddParcelModalVisible, setIsAddParcelModalVisible] = useState(false);
   const [newParcelId, setNewParcelId] = useState('');
-  const [selectedParcel, setSelectedParcel] = useState<Parcel | null>(null);
-  const [updatedParcelId, setUpdatedParcelId] = useState('');
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-
-  const [addParcel, { isLoading: isAddingParcel }] = useAddParcel();
-  const [updateParcel, { isLoading: isUpdatingParcel }] = useUpdateParcel();
-
-  const handleAddParcel = async () => {
-    if (!employee) {
-      return;
-    }
-    const parcel: Parcel = {
-      parcelId: newParcelId,
-      employeeName: employee.name,
-      delivered: false,
-    };
-
-    await addParcel({ employeeName: employee.name, listId, parcel });
-    setNewParcelId('');
-    setIsModalVisible(false);
-    refetch();
-  };
-
-  const handleParcelClick = (parcel: Parcel) => {
-    setSelectedParcel(parcel);
-    setUpdatedParcelId(parcel.parcelId);
-    setIsEditModalVisible(true);
-  };
-
-  const handleUpdateParcel = () => {
-    if (!selectedParcel || !employee) {
-      return;
-    }
-
-    const updatedParcel: Parcel = {
-      ...selectedParcel,
-      parcelId: updatedParcelId,
-    };
-
-    updateParcel({
-      employeeName: employee.name,
-      listId,
-      parcelId: selectedParcel.parcelId,
-      parcel: updatedParcel
-    }).then(() => {
-      setSelectedParcel(null);
-      setIsEditModalVisible(false);
-      refetch();
-    })
-  };
 
   if (isLoading) {
     return <Text>Loading...</Text>;
@@ -95,20 +42,18 @@ const ParcelListPage: React.FC<{
               <ParcelItem
                 listId={list._id as string}
                 parcel={item}
-                showModal={() => handleParcelClick(item)}
-                onDelete={refetch}
               />}
           />
           : <Text style={styles.message}>No parcels found.</Text>
         }
       </View>
-      <TouchableOpacity style={styles.addButtonContainer} onPress={() => setIsModalVisible(true)}>
+      <TouchableOpacity style={styles.addButtonContainer} onPress={() => setIsAddParcelModalVisible(true)}>
         <Icon name='pluscircle' color='#DF0000' size={48} />
       </TouchableOpacity>
       <AddParcelModal
-        show={isModalVisible}
+        show={isAddParcelModalVisible}
         onClose={() => {
-          setIsModalVisible(false)
+          setIsAddParcelModalVisible(false)
           refetch()
         }}
         newParcelId={newParcelId}
@@ -116,23 +61,6 @@ const ParcelListPage: React.FC<{
         employeeName={employee?.name}
         listId={list?._id}
       />
-      {selectedParcel && (
-        <Modal visible={isEditModalVisible}>
-          <Text style={styles.modalTitle}>Edit Parcel</Text>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Parcel ID"
-            value={selectedParcel.parcelId}
-            onChangeText={(text) => setSelectedParcel({ ...selectedParcel, parcelId: text })}
-          />
-          <Button
-            title="Update"
-            onPress={handleUpdateParcel}
-            disabled={isUpdatingParcel}
-          />
-          <Button title="Cancel" onPress={() => setIsEditModalVisible(false)} />
-        </Modal>
-      )}
     </View>
   );
 };
