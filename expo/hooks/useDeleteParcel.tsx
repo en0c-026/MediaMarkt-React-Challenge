@@ -1,5 +1,6 @@
 import { useMutation, MutationFunction, UseMutationResult } from 'react-query';
-import { API_URL } from './useCreateEmployee';
+import apiConfig from '../state/config';
+
 
 interface DeleteParcelParams {
   employeeName: string;
@@ -8,7 +9,7 @@ interface DeleteParcelParams {
 }
 
 async function deleteParcel({ employeeName, listId, parcelId }: DeleteParcelParams): Promise<void> {
-  const response = await fetch(`${API_URL}/employees/${employeeName}/lists/${listId}/parcels/${parcelId}`, {
+  const response = await fetch(`${apiConfig.API_URL}/employees/${employeeName}/lists/${listId}/parcels/${parcelId}`, {
     method: 'DELETE',
   });
 

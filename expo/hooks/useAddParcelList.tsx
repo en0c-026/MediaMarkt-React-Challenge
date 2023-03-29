@@ -1,6 +1,7 @@
 import { useMutation, MutationFunction, UseMutationResult } from 'react-query';
+import apiConfig from '../state/config';
 import { Employee } from '../state/types';
-import { API_URL } from './useCreateEmployee';
+
 import { useEmployeeByName } from './useGetEmployeeByName';
 
 interface AddParcelListParams {
@@ -19,7 +20,7 @@ async function addParcelList({ employeeName, listName }: AddParcelListParams): P
     name: listName,
   };
 
-  const updatedEmployeeQuery = await fetch(`${API_URL}/employees/${employeeName}/lists`, {
+  const updatedEmployeeQuery = await fetch(`${apiConfig.API_URL}/employees/${employeeName}/lists`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

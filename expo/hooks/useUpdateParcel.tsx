@@ -1,6 +1,7 @@
 import { useMutation, MutationFunction, UseMutationResult } from 'react-query';
+import apiConfig from '../state/config';
 import { Parcel } from '../state/types';
-import { API_URL } from './useCreateEmployee';
+
 
 interface UpdateParcelParams {
   employeeName: string;
@@ -10,7 +11,7 @@ interface UpdateParcelParams {
 }
 
 async function updateParcel({ employeeName, listId, parcelId, parcel }: UpdateParcelParams): Promise<Parcel> {
-  const response = await fetch(`${API_URL}/employees/${employeeName}/lists/${listId}/parcels/${parcelId}`, {
+  const response = await fetch(`${apiConfig.API_URL}/employees/${employeeName}/lists/${listId}/parcels/${parcelId}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',

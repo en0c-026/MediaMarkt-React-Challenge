@@ -1,6 +1,6 @@
 import { useMutation, MutationFunction, UseMutationResult } from 'react-query';
+import apiConfig from '../state/config';
 import { Parcel } from '../state/types';
-import { API_URL } from './useCreateEmployee';
 
 interface AddParcelParams {
   employeeName: string;
@@ -9,7 +9,7 @@ interface AddParcelParams {
 }
 
 async function addParcel({ employeeName, listId, parcel }: AddParcelParams): Promise<Parcel> {
-  const response = await fetch(`${API_URL}/employees/${employeeName}/lists/${listId}/parcels`, {
+  const response = await fetch(`${apiConfig.API_URL}/employees/${employeeName}/lists/${listId}/parcels`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

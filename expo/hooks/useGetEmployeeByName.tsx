@@ -1,9 +1,10 @@
 import { useQuery, QueryKey, useQueryClient } from 'react-query';
+import apiConfig from '../state/config';
 import { Employee, List } from '../state/types';
-import { API_URL } from './useCreateEmployee';
+
 
 async function fetchEmployeeByName(name: string): Promise<Employee> {
-  const response = await fetch(`${API_URL}/employees/${name}`);
+  const response = await fetch(`${apiConfig.API_URL}/employees/${name}`);
   if (!response.ok) {
     throw new Error('Employee not found or does not exist');
   }
