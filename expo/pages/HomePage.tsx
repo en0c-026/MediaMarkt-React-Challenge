@@ -3,62 +3,59 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useEmployeeByName } from '../hooks/useGetEmployeeByName';
 import ParcelLists from '../components/ParcelLists';
 import EmployeeInput from '../components/EmployeeInput';
-import useCreateEmployee from '../hooks/useCreateEmployee';
 import { StateContext } from '../state/context';
-import RegisterModal from '../components/RegisterModal';
-import CreateListModal from '../components/CreateListModal';
-import { useQueryClient } from 'react-query';
+import RegisterEmployeeModal from '../components/RegisterEmployeeModal';
+import AddParcelListModal from '../components/AddParcelListModal';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 const HomePage = () => {
   const [name, setName] = useState('');
   const { data: employee, refetch } = useEmployeeByName(name);
-  const { mutate: createEmployee } = useCreateEmployee();
   const { state, dispatch } = useContext(StateContext);
-  const [registerModalVisible, setRegisterModalVisible] = useState(false);
-  const [createListModalVisible, setCreateListModalVisible] = useState(false);
-
-  const handleCreateEmployee = async (employeeName: string) => {
-    createEmployee({ employeeName });
-    refetch();
-    setRegisterModalVisible(false);
-  };
-
+  const [createListModalVisible, setAddParcelListModalVisible] = useState(false);
   const handleResetUsername = () => dispatch({ type: 'RESET_USERNAME' });
-
- 
 
   return (
     <View style={styles.container}>
-      {!state.username ? (
-        <View>
+      {!state.username ?
+        <>
+          <Text style={styles.title}>CarrieX App</Text>
           <EmployeeInput name={name} setName={setName} />
-          <TouchableOpacity style={styles.button} onPress={() => setRegisterModalVisible(true)}>
-            <Text style={styles.buttonText}>Register</Text>
+        </> :
+        <>
+          <View style={styles.welcomeHeader}>
+            <Text style={styles.subtitle}>Welcome {state.username ? state.username : 'to CarrieX App!'}</Text>
+            <TouchableOpacity style={styles.button} onPress={handleResetUsername}>
+              <Text style={styles.buttonText}>Logout</Text>
+            </TouchableOpacity>
+          </View>
+          <ParcelLists employee={employee} onDeleteList={() => refetch()} />
+          <TouchableOpacity style={styles.addButtonContainer} onPress={() => setAddParcelListModalVisible(true)}>
+            <Icon name='pluscircle' color='#DF0000' size={48} />
           </TouchableOpacity>
-        </View>
-      ) : (
-        <View>
-          <Text style={styles.subtitle}>Welcome {state.username ? state.username : 'to CarrieX App!'}</Text>
-          <TouchableOpacity style={styles.button} onPress={handleResetUsername}>
-            <Text style={styles.buttonText}>Logout</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => setCreateListModalVisible(true)}>
-            <Text style={styles.buttonText}>Create Parcel List</Text>
-          </TouchableOpacity>
-          <ParcelLists employee={employee} />
-        </View>
-      )}
-      <RegisterModal show={registerModalVisible} onClose={() => setRegisterModalVisible(false)} onCreateEmployee={handleCreateEmployee} />
-      <CreateListModal show={createListModalVisible} onClose={() => setCreateListModalVisible(false)} employeeName={state.username} />
+        </>
+      }
+      <AddParcelListModal
+        show={createListModalVisible}
+        onClose={() => {
+          setAddParcelListModalVisible(false)
+          refetch()
+        }}
+        employeeName={state.username}
+      />
     </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 24,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginVertical: 20,
+    textAlign: 'center'
   },
   subtitle: {
     fontSize: 20,
@@ -66,11 +63,14 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   button: {
-    backgroundColor: '#4a148c',
-    paddingVertical: 10,
+    backgroundColor: '#DF0000',
     paddingHorizontal: 20,
+    paddingVertical: 10,
     borderRadius: 5,
-    marginVertical: 10,
+  },
+  addButtonContainer: {
+    display: 'flex',
+    alignItems: 'center'
   },
   buttonText: {
     color: '#fff',
@@ -78,6 +78,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  welcomeHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  }
 });
 
 export default HomePage;

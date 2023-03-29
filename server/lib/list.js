@@ -32,15 +32,15 @@ const getAllLists = async (req, res) => {
 
 const deleteList = async (req, res) => {
   try {
-    const { employeeId, listName } = req.params;
+    const { employeeName, listId } = req.params;
     // Buscar al empleado por ID y eliminar el objeto listSchema con el nombre proporcionado
-    const updatedEmployee = await Employee.findByIdAndUpdate(
-      employeeId,
-      { $pull: { lists: { name: listName } } },
-      { new: true }
-    );
-
-    res.status(200).json(updatedEmployee);
+    const employee = await Employee.findOne({ name: employeeName });
+    if (!employee) {
+      return res.status(404).json({ error: 'Empleado no encontrado' });
+    }
+    employee.lists = employee.lists.filter((l) => l._id.toString() !== listId)
+    await employee.save()
+    res.status(200).json(employee);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error al eliminar el objeto listSchema del array lists del empleado' });

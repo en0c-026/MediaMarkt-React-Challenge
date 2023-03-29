@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useEmployeeByName } from '../hooks/useGetEmployeeByName';
 import { StateContext } from '../state/context';
+import RegisterEmployeeModal from './RegisterEmployeeModal';
 
 interface EmployeeInputProps {
   name: string;
@@ -10,6 +11,7 @@ interface EmployeeInputProps {
 
 const EmployeeInput = ({ name, setName }: EmployeeInputProps) => {
   const { isLoading, isError, refetch } = useEmployeeByName(name);
+  const [registerModalVisible, setRegisterModalVisible] = useState(false);
 
   const { dispatch } = useContext(StateContext);
 
@@ -31,54 +33,93 @@ const EmployeeInput = ({ name, setName }: EmployeeInputProps) => {
 
   return (
     <View style={styles.inputContainer}>
-      <Text style={styles.label}>Please enter your employee name</Text>
+      <Text style={styles.label}>Input your name:</Text>
       <TextInput
         style={styles.input}
         placeholder="Employee name. eg: Carlos"
         value={name}
         onChangeText={handleNameChange}
       />
-      <TouchableOpacity style={styles.button} onPress={handleGetEmployee}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-      {isLoading && <Text>Loading...</Text>}
-      {isError && <Text style={styles.errorText}>Error loading employee information.</Text>}
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity
+          style={isLoading || name === '' ? styles.disabledButton : styles.button}
+          onPress={handleGetEmployee}
+          disabled={isLoading || name === ''}
+        >
+          <Text style={isLoading || name === '' ? styles.disabledButtonText : styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => {
+          setRegisterModalVisible(true)
+          setName('')
+        }}>
+          <Text style={styles.buttonText}>Register</Text>
+        </TouchableOpacity>
+        <RegisterEmployeeModal
+          show={registerModalVisible}
+          onClose={() => {
+            setRegisterModalVisible(false);
+          }}
+        />
+      </View>
+      <View style={styles.messageContainer}>
+        {isLoading && <Text>Loading...</Text>}
+        {isError && <Text style={styles.errorText}>Error loading employee information.</Text>}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   inputContainer: {
-    marginVertical: 20,
+    marginVertical: 40,
   },
   label: {
     fontSize: 16,
     marginBottom: 10,
   },
   input: {
-    height: 40,
+    height: 48,
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 5,
     paddingHorizontal: 10,
-    marginBottom: 10,
+    marginBottom: 24,
+  },
+  buttonsContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly'
   },
   button: {
-    backgroundColor: '#0080ff',
-    borderRadius: 5,
-    paddingVertical: 10,
+    backgroundColor: '#DF0000',
     paddingHorizontal: 20,
-    alignItems: 'center',
+    paddingVertical: 12,
+    borderRadius: 5,
+  }, 
+  disabledButton: {
+    backgroundColor: '#B70202',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 5,
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
   },
+  disabledButtonText: {
+    color: '#DEDEDE',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   errorText: {
     color: 'red',
-    marginTop: 10,
   },
+  messageContainer: {
+    padding: 32,
+    display: 'flex',
+    alignItems: 'center'
+  }
 });
 
 export default EmployeeInput;

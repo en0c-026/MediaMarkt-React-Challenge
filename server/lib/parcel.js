@@ -1,8 +1,6 @@
 const Employee = require("../models/Employee");
 
 const addParcel = async (req, res) => {
-  console.log(req.params)
-  console.log(req.body)
   try {
     const employee = await Employee.findOne({ name: req.body.employeeName });
     if (!employee) {
@@ -28,7 +26,6 @@ const addParcel = async (req, res) => {
 const updateParcel = async (req, res) => {
   try {
     const { employeeName, listId, parcelId } = req.params;
-    const { parcelData } = req.body;
 
     // Buscar el empleado por nombre
     const employee = await Employee.findOne({ name: employeeName });
@@ -38,7 +35,7 @@ const updateParcel = async (req, res) => {
     }
 
     // Buscar la lista por id
-    const list = employee.lists.id(listId);
+    const list = employee.lists.find((l) => l._id.toString() === listId);
 
     if (!list) {
       return res.status(404).json({ error: 'Lista no encontrada' });
@@ -52,7 +49,7 @@ const updateParcel = async (req, res) => {
     }
 
     // Actualizar el paquete con los nuevos datos
-    list.parcels[parcelIndex] = parcelData;
+    list.parcels[parcelIndex] = req.body;
 
     // Guardar los cambios en la base de datos
     await employee.save();
@@ -76,7 +73,8 @@ const deleteParcel = async (req, res) => {
     }
 
     // Buscar la lista por id
-    const list = employee.lists.id(listId);
+    const list = employee.lists.find((l) => l._id.toString() === listId);
+
 
     if (!list) {
       return res.status(404).json({ error: 'Lista no encontrada' });
